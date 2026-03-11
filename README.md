@@ -150,34 +150,28 @@ CREATE TABLE tasks ( id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT N
 }
 ```
 
-Example Task:
-
-```json
-{
-  "title": "Complete Project Report",
-  "description": "Finalize and submit the project report",
-  "priority": "High",
-  "deadline": "2026-03-15T23:59:00Z",
-  "status": "Pending",
-  "assignee": "user_id",
-  "createdAt": "2026-03-10T12:00:00Z",
-  "updatedAt": "2026-03-11T10:00:00Z"
-}
-```
+User Table
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
+);
 
 ---
 
 # API Documentation
 
-TaskTrack backend provides a **RESTful API**.
+TaskTrack backend exposes a RESTful API.
 
-API documentation is available using **Swagger**.
+API documentation is generated using SpringDoc OpenAPI (Swagger).
 
-Access it at:
+Access the API documentation at:
 
-```
-http://localhost:5000/api-docs
-```
+http://localhost:8080/swagger-ui.html
 
 ---
 
