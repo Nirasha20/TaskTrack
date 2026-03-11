@@ -14,27 +14,16 @@ TaskTrack enables users to:
 - Assign priorities and deadlines
 - Track task completion status
 - Filter and sort tasks based on multiple criteria
-- Collaborate with team members
+
 
 ### Tech Stack
 
-**Frontend:** React  
-**Backend:** Node.js + Express  
-**Database:** MongoDB
+**Frontend:** Next.js (React-based) 
+**Backend:** Spring Boot (Java)  
+**Database:** MySQL
 
 ---
 
-# Project Architecture
-
-```
-Frontend (React)
-       │
-       ▼
-Backend API (Node.js + Express)
-       │
-       ▼
-Database (MongoDB)
-```
 
 ---
 
@@ -44,10 +33,13 @@ Database (MongoDB)
 
 Make sure the following are installed:
 
-- Node.js (v14 or higher)
-- npm
-- MongoDB (local or cloud)
-- Git
+Node.js (v14 or higher) and npm
+
+Java 17+
+
+MySQL Server (local or remote)
+
+Git
 
 ---
 
@@ -62,128 +54,82 @@ cd TaskTrack
 
 # Backend Setup
 
-Navigate to the backend folder:
 
-```bash
+Navigate to backend folder:
+
 cd backend
-```
 
-Install dependencies:
+Update the database configuration (see Database Configuration section).
 
-```bash
-npm install
-```
+Run the backend:
 
-Create environment variables:
+./mvnw spring-boot:run
 
-Create a `.env` file using `.env.example` as reference.
+or if Maven is installed globally:
 
-Example:
-
-```
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/tasktrack
-JWT_SECRET=your_secret_key
-```
-
-Start the backend server:
-
-```bash
-npm run start
-```
-
-Backend will run at:
-
-```
-http://localhost:5000
-```
+mvn spring-boot:run
 
 ---
 
 # Frontend Setup
 
+
+
 Navigate to frontend folder:
 
-```bash
 cd ../frontend
-```
 
 Install dependencies:
 
-```bash
 npm install
-```
 
-(Optional) Configure environment variables:
+Create .env.local file and configure API URL:
 
-Create `.env` if needed:
+NEXT_PUBLIC_API_URL=http://localhost:8080/api
 
-```
-REACT_APP_API_URL=http://localhost:5000
-```
+Start the frontend:
 
-Start frontend:
+npm run dev
 
-```bash
-npm run start
-```
+The application will run at:
 
-Frontend will run at:
-
-```
 http://localhost:3000
-```
 
 ---
 
-# Steps to Run the Application
 
-1. Configure `.env` files for backend and frontend  
-2. Start MongoDB  
-3. Run backend server  
-4. Run frontend application  
-5. Open browser and go to:
-
-```
-http://localhost:3000
-```
 
 ---
 
 # Database Configuration
 
-TaskTrack uses **MongoDB**.
+TaskTrack uses MySQL for storing data.
 
-The database connection string is defined in:
+Step 1: Create Database
+CREATE DATABASE tasktrack;
+Step 2: Update application.properties
 
-```
-backend/.env
-```
+File location:
 
-Example:
+backend/src/main/resources/application.properties
 
-```
-MONGO_URI=mongodb://localhost:27017/tasktrack
-```
+Add your MySQL credentials:
 
-The backend automatically creates collections when the server starts.
+spring.datasource.url=jdbc:mysql://localhost:3306/tasktrack
+spring.datasource.username=YOUR_MYSQL_USERNAME
+spring.datasource.password=YOUR_MYSQL_PASSWORD
 
----
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+The backend will automatically create required tables on first start.
 
 # Database Schema
 
 ## User Schema
 
 ```javascript
-{
-  _id: ObjectId,
-  name: String,
-  email: String,
-  password: String, // hashed
-  role: String, // 'user' or 'admin'
-  createdAt: Date,
-  updatedAt: Date
-}
+CREATE TABLE tasks ( id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255) NOT NULL, description TEXT, priority ENUM('Low', 'Medium', 'High'), deadline DATETIME, status ENUM('Pending', 'Completed', 'In Progress'), assignee_id INT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP );
 ```
 
 ---
